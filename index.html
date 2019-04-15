@@ -1,0 +1,98 @@
+<html>
+<head>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl as ctrl">
+
+<form name="myForm">
+  <div class="container-fluid mb-3">
+    <div class="form-group">
+        <label>姓名</label>
+        <input type="text" name="name" ng-model="model.name" ng-class="{'invalid': inputName}" class="form-control" placeholder="請輸入2個以上中文字" ng-pattern="/[\u4e00-\u9fa5]/" ng-minlength="2" required/>
+        <div class="errorMessage" ng-messages="myForm.name.$error" ng-show="inputName">
+          <p ng-message="required">必填</p>
+          <p ng-message="pattern">請輸入中文</p>
+          <p ng-message="minlength">最少兩個字</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>電話</label>
+        <input type="test" name="phone" ng-model="model.phone" ng-class="{'invalid': inputPhone}" class="form-control" placeholder="手機號碼" ng-minlength="10" ng-maxlength="10" ng-pattern="/^(09)[0-9]{8}$/" required/>
+        <div class="errorMessage" ng-messages="myForm.phone.$error" ng-show="inputPhone">
+          <p ng-message="required">必填</p>
+          <p ng-message="pattern">請輸入手機號碼</p>
+          <p ng-message="minlength">最少10個數字</p>
+          <p ng-message="maxlength">最多10個數字</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>收件地址</label>
+        <input type="text" name="address" ng-model="model.address" ng-class="{'invalid': inputAddr}" class="form-control" placeholder="地址" required/>
+        <div class="errorMessage" ng-messages="myForm.address.$error" ng-show="inputAddr">
+          <p ng-message="required">必填</p>
+        </div>
+    </div>
+    
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="patch" ng-model="model.patch" ng-class="{'invalid': inputPatch}" value="立即送貨" id="patch1" ng-required="!model.patch">
+        <label class="form-check-label" for="patch1">立即送貨</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="patch" ng-model="model.patch" ng-class="{'invalid': inputPatch}" value="指定到貨日" id="patch2" ng-required="!model.patch">
+        <label class="form-check-label mr-2" for="patch2">指定到貨日</label>
+        <input class="form-control-sm" type="date" ng-model="model.date" ng-class="{'invalid': inputDate}" ng-show="selectDate" name="date" min="{{ today | date:'yyyy-MM-dd' }}" ng-required="selectDate"></span>
+        <div class="errorMessage2" ng-show="inputDate">
+          <p>必填</p>
+        </div>
+    </div>
+    <div class="errorMessage" ng-show="inputPatch">
+      <p>必填</p>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="exampleFormControlTextarea1">備註</label>
+        <textarea name="note" ng-model="model.note" ng-class="{'invalid': inputNote}" class="form-control" id="exampleFormControlTextarea1" rows="3" minlength="3" maxlength="50" required></textarea>
+        <div class="errorMessage" ng-messages="myForm.note.$error" ng-show="inputNote">
+          <p ng-message="required">必填</p>
+          <p ng-message="minlength">最少3個字</p>
+          <p ng-message="maxlength">最多50個字</p>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-click="submit()" ng-disabled="disableBtn">Submit</button>
+    <button type="reset" class="btn">Cancel</button>
+  </div>
+</form>
+
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">姓名</th>
+            <th scope="col">電話</th>
+            <th scope="col">收件地址</th>
+            <th scope="col">交期</th>
+            <th scope="col">備註</th>
+          </tr>
+        </thead>
+        <tbody ng-show="displayData">
+          <tr>
+            <td>{{ model.name }}</td>
+            <td>{{ model.phone }}</td>
+            <td>{{ model.address }}</td>
+            <td>{{ model.patch }} <span>{{ model.date | date: "yyyy-MM-dd" }}</span></td>
+            <td>{{ model.note }}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-messages/angular-messages.min.js"></script>
+<script src="built/local/output.js"></script>
+</body>
+</html>
